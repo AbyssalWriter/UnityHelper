@@ -1,28 +1,49 @@
-﻿using System.Collections.Generic;
-using Helper.Shared;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Helper.Debug
 {
-    public class DebugHelper: Singleton<DebugHelper>
+    public class DebugHelper: Shared.Singleton<DebugHelper>
     {
-        private readonly Dictionary<string, object> _logs = new();
+        [SerializeField] private Rect rectBox = new(10,0, 750, 20);
+        [SerializeField] private float logOffset = 10;
+        [SerializeField] private float clearLogsTimerInSeconds = 5f;
+
+        private Dictionary<string, object> _logs = new();
+        private float _nextClease;
 
         public void Log(string key, object value)
         {
-            if (_logs.TryAdd(key, value)) return;
+            if(_logs.TryAdd(key,value)) return;
+            
             _logs[key] = value;
+        }
+
+        private void LateUpdate()
+        {
+            _nextClease -= Time.deltaTime;
+
+            if (_nextClease > 0) return;
+            _nextClease = clearLogsTimerInSeconds;
+            _logs.Clear();
         }
 
         private void OnGUI()
         {
-            var rect = new Rect(10, 0, 400, 20);
-            GUILayout.BeginArea(new Rect(0, 0, 400, Screen.height));
+            var clone = _logs.ToDictionary(entry => entry.Key,
+                entry => entry.Value);
+
+            var drawingRect = new Rect(rectBox);
+            GUILayout.BeginArea(new Rect(0, 0, rectBox.width, Screen.height));
         
-            foreach (var keyValuePair in _logs)
+            foreach (var keyValuePair in clone)
             {
-                rect.y += rect.height + 10;
-                GUI.Label(rect, keyValuePair.Key +" "+ keyValuePair.Value);
+                drawingRect.y += drawingRect.height + logOffset;
+                GUI.Label(drawingRect, keyValuePair.Key +" "+ keyValuePair.Value);
+  
             }
             GUILayout.EndArea();
         }

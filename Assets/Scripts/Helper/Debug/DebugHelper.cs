@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Helper.Debug
 {
-    public class GameDebug: Singleton<GameDebug>
+    public class DebugHelper: Singleton<DebugHelper>
     {
         private readonly Dictionary<string, object> _logs = new();
 

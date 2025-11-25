@@ -20,9 +20,9 @@
             _stateMachineSize = aSizeState;
         }
 
-        public void AddState(int aStateId, State aState)
+        public void AddState(State aState)
         {
-            _allStates[aStateId] = aState;
+            _allStates[aState.GetStateId()] = aState;
         }
 
         public void AddState(int aStateId, EnterState aEnter, UpdateState aUpdate, ExitState aExit, bool aSkipFirstUpdate = false)

@@ -20,6 +20,11 @@
             _stateMachineSize = aSizeState;
         }
 
+        public void AddState(int aStateId, State aState)
+        {
+            _allStates[aStateId] = aState;
+        }
+
         public void AddState(int aStateId, EnterState aEnter, UpdateState aUpdate, ExitState aExit, bool aSkipFirstUpdate = false)
         {
             _allStates[aStateId] = new State(aStateId, aEnter, aUpdate, aExit, aSkipFirstUpdate);
@@ -29,7 +34,7 @@
         {
             if (IsLocked || aStateId >= _stateMachineSize) return;
             if (_currentState == _allStates[aStateId]) return;
-            
+
             _incomingState = _allStates[aStateId];
 
             _currentState?.Exit();
@@ -44,7 +49,7 @@
         {
             if (IsLocked || aStateId >= _stateMachineSize) return;
             if (_currentState == _allStates[aStateId]) return;
-            
+
             _previousState = _currentState;
             _currentState = _allStates[aStateId];
             _currentState.Enter();

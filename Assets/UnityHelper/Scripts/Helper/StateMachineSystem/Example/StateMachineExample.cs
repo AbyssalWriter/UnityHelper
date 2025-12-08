@@ -26,9 +26,9 @@ namespace Helper.StateMachineSystem.Example
         {
             _stateMachine = new StateMachine.StateMachine(States.Count.ToInt());
 
-            _stateMachine.AddState(States.Idle.ToInt(), IdleEnterState, IdleUpdateState, IdleExitState);
-            _stateMachine.AddState(States.Walk.ToInt(), null, WalkUpdate, null);
-            _stateMachine.AddState(States.Run.ToInt(), RunEnterState, null, null);
+            _stateMachine.AddState(States.Idle.ToInt(), IdleEnterState, IdleUpdateState, null, IdleExitState);
+            _stateMachine.AddState(States.Walk.ToInt(), null, WalkUpdate, null, null);
+            _stateMachine.AddState(States.Run.ToInt(), RunEnterState, null, null, null);
 
             _stateMachine.ChangeState(States.Idle.ToInt());
         }
@@ -37,21 +37,21 @@ namespace Helper.StateMachineSystem.Example
         {
             _stateMachine.Update();
 
-            if(Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 _stateMachine.ChangeState(States.Idle.ToInt());
             }
-        
-            if(Input.GetKeyDown(KeyCode.Alpha2))
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 _stateMachine.ChangeState(States.Walk.ToInt());
             }
-        
-            if(Input.GetKeyDown(KeyCode.Alpha3))
+
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 _stateMachine.ChangeState(States.Run.ToInt());
             }
-        
+
         }
 
         private void IdleEnterState()
